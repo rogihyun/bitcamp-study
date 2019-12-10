@@ -26,3 +26,12 @@ System.out.println("c:\\users\\user\\git"); // \ 문자를 출력시키는 문�
 
   }
 }
+
+
+// 줄바꿈 코드
+// carrahe return(CR) : 0d
+//Line Feed(LF): 0a
+//
+//- windows OS에서는 줄바꿈을 표시하기 위해 CRLR 2바이트 코드를 삽입한다.
+// - unix OS에서는 줄바꿈을 표시하기 위해
+// - LF 1바이트 코드를 삽입한다.
