@@ -9,9 +9,9 @@ System.out.println(3.14);
 //부동 소수점
 System.out.println(0.0314159e2); 
 System.out.println(0.0314159E2);
-System.out.println(31.4159e-1); 
-System.out.println(31.4159e-2);
-System.out.println(3141.59e-3);     
+System.out.println(31.4159e-1); // 10**-1승
+System.out.println(31.4159e-2); // 10**-2승
+System.out.println(3141.59e-3); // 10**-3승    
 
 
 

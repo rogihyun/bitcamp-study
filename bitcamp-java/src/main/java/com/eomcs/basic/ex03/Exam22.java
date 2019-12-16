@@ -9,9 +9,9 @@ System.out.println(235_000_000); //3자리 서양
 System.out.println(23_5_00_00_00); //앞,뒤 넣으면 오류남
 
 //8진수 표기법
-System.out.println(01_44); // 한줄출력
-System.out.println(0_144);
-//System.out.println(0144)_;
+System.out.println(01_44); // o
+System.out.println(0_144); // o
+//System.out.println(0144_); x
 
 //2진수 표기법
 System.out.println(0b0110_0100); 
