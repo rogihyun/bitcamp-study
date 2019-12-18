@@ -3,6 +3,9 @@ package ex05;
 
 public class Exam04_3 {
     public static void main(String[] args) {
+      // >>> 비트 이동 연산자 사용법
+      
+      
         int i = 0b01101001; // 105
         System.out.println(i); 
         System.out.println(i >>> 1); // 00110100|1 => 52
