@@ -1,66 +1,129 @@
 package com.eomcs.lms;
 
-import java.sql.Date;
 import java.util.Scanner;
+import com.eomcs.lms.handler.BoardHandler;
+import com.eomcs.lms.handler.LessonHandler;
+import com.eomcs.lms.handler.MemberHandler;
 
 public class App {
+
+  static Scanner keyboard = new Scanner(System.in);
+  
   public static void main(String[] args) {
-    Scanner keyboard = new Scanner(System.in);
-
-    final int SIZE = 100;
-
-    int[] no = new int[SIZE];
-    String[] title = new String[SIZE];
-    String[] description = new String[SIZE];
-    Date[] starDate = new Date[SIZE];
-    Date[] endDate = new Date[SIZE];
-    int[] totalHours = new int[SIZE];
-    int[] dayHours = new int[SIZE];
     
+    // LessonHandler의 메서드를 사용하기 전에 
+    // 그 메서드가 작업할 때 사용할 키보드 객체를 설정해줘야 한다.
+    LessonHandler.keyboard = keyboard;
+    MemberHandler.keyboard = keyboard;
+    BoardHandler.keyboard = keyboard;
 
-    int count = 0;
-    for (int i =0; i < SIZE; i++) {  
-    count++;
+    //BoardHandler의 메서드가 사용할 메모리만 게시판 마다 따로 생성한다.
+    BoardHandler 게시판1 = new BoardHandler();
+    BoardHandler 게시판2 = new BoardHandler();
+    BoardHandler 게시판3 = new BoardHandler();
+    BoardHandler 게시판4 = new BoardHandler();
+    BoardHandler 게시판5 = new BoardHandler();
+    BoardHandler 게시판6 = new BoardHandler();
     
-      System.out.print("번호:? ");
-      no[i] = keyboard.nextInt();
-      keyboard.nextLine(); 
-
-      System.out.print("수업명:? ");
-      title[i] = keyboard.nextLine();
-
-      System.out.print("수업내용? ");
-      description[i] = keyboard.nextLine();
-
-      System.out.print("시작일? ");
-      starDate[i] = Date.valueOf(keyboard.next());
-
-      System.out.print("종료일? ");
-      endDate[i] = Date.valueOf(keyboard.next());
-
-      System.out.print("총수업시간? ");
-      totalHours[i] = keyboard.nextInt();
-
-      System.out.print("일수업시간? ");
-      dayHours[i] = keyboard.nextInt();
-
-      count++;
-      keyboard.nextLine(); // 일수업시간 입력 값 다음에 남아 있는 줄바꿈  값 제거
-
-      System.out.println();
-      System.out.print("계속 입력하시겠습니까?(Y/n) ");
-      String response = keyboard.nextLine();
-      if (!response.equalsIgnoreCase("y")) {
-        break;
+    LessonHandler 정규수업 = new LessonHandler();
+    
+    MemberHandler 일반회원 = new MemberHandler();
+    
+    String command;
+    
+    do {
+      System.out.print("\n명령> ");
+      command = keyboard.nextLine();
+      
+      switch (command) {
+        case "/lesson/add":
+          // 다른 클래스로 분리한 메서드를 호출할 때는
+          // 클래스를 이름을 지정해야 한다.
+          LessonHandler.addLesson(정규수업);
+          break;
+        case "/lesson/list":
+          LessonHandler.listLesson(정규수업);
+          break;
+        case "/member/add":
+          MemberHandler.addMember(일반회원);
+          break;
+        case "/member/list":
+          MemberHandler.listMember(일반회원);
+          break;
+        case "/board/add":
+          BoardHandler.addBoard(게시판1);
+          break;
+        case "/board/list":
+          BoardHandler.listBoard(게시판1);
+          break;
+        case "/board/detail":
+          BoardHandler.detailBoard(게시판1);
+          break;
+        case "/board2/add":
+          BoardHandler.addBoard(게시판2);
+          break;
+        case "/board2/list":
+          BoardHandler.listBoard(게시판2);
+        case "/board2/detail":
+          BoardHandler.detailBoard(게시판2);
+          break;
+        case "/board3/add":
+          BoardHandler.addBoard(게시판3);
+          break;
+        case "/board3/list":
+          BoardHandler.listBoard(게시판3);
+          break;
+        case "/board3/detail":
+          BoardHandler.detailBoard(게시판3);
+          break;
+        case "/board4/add":
+          BoardHandler.addBoard(게시판4);
+          break;
+        case "/board4/list":
+          BoardHandler.listBoard(게시판4);
+          break;
+        case "/board4/detail":
+          BoardHandler.detailBoard(게시판4);
+          break;
+        case "/board5/add":
+          BoardHandler.addBoard(게시판5);
+          break;
+        case "/board5/list":
+          BoardHandler.listBoard(게시판5);
+          break;
+        case "/board5/detail":
+          BoardHandler.detailBoard(게시판5);
+          break;
+        case "/board6/add":
+          BoardHandler.addBoard(게시판6);
+          break;
+        case "/board6/list":
+          BoardHandler.listBoard(게시판6);
+          break;
+        case "/board6/detail":
+          BoardHandler.detailBoard(게시판6);
+          break;
+        default:
+          if (!command.equalsIgnoreCase("quit")) {
+            System.out.println("실행할 수 없는 명령입니다.");
+          }
       }
-    }
+      
+    } while (!command.equalsIgnoreCase("quit"));
+    
+    System.out.println("안녕!");
+    
     keyboard.close();
-
-    System.out.println();
-
-    for (int i = 0; i < count; i++) {
-      System.out.printf("%d, %s, %s ~ %s, %d\n", 
-          no[i], title[i], starDate[i], endDate[i], totalHours[i]);
-    }
   }
 }
+  
+
+  
+
+  
+
+
+
+
+
+
