@@ -1,6 +1,7 @@
 package com.eomcs.oop.ex06.d;
 
 public class Exam0400 {
+  
     public static void main(String[] args) {
         Member m1 = new Member("홍길동", 20);
         Member m2 = new Member("홍길동", 20);

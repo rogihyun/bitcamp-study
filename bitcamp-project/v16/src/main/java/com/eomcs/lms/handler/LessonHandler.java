@@ -12,7 +12,7 @@ public class LessonHandler {
   
   public LessonHandler(Scanner input) {
     this.input = input;
-    lessonList = new LessonList();
+    this.lessonList = new LessonList();
   }
   
   public void addLesson() {
@@ -48,10 +48,12 @@ public class LessonHandler {
   }
   
   public void listLesson() {
-    Lesson[] lesson = lessonList.toArray();
-    for (Lesson l: lesson) {
+    Lesson[] lessons = this.lessonList.toArray();
+    for (Lesson l : lessons) {
       System.out.printf("%d, %s, %s ~ %s, %d\n",
-          l.getNo(), l.getTitle(), l.getStartDate(), l.getEndDate(), l.getTotalHours());
+          l.getNo(), l.getTitle(), 
+          l.getStartDate(), l.getEndDate(), l.getTotalHours());
     }
   }
+  
 }
