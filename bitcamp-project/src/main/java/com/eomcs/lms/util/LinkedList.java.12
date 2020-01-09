@@ -1,4 +1,4 @@
-package com.eomcs.util;
+package com.eomcs.lms.util;
 
 import java.lang.reflect.Array;
 
