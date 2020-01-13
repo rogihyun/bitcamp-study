@@ -1,4 +1,4 @@
-package com.eomcs.lms.util;
+package com.eomcs.util;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -52,5 +52,4 @@ public class Prompt {
     }
     return Date.valueOf(value);
   }
-  
 }

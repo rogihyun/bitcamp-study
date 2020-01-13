@@ -1,9 +1,6 @@
-// 사용자 입력을 받는 코드를 별도의 메서드로 분리한다.
-//
 package com.eomcs.lms.handler;
 
 import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.util.ArrayList;
 import com.eomcs.lms.util.LinkedList;
 import com.eomcs.lms.util.Prompt;
 
@@ -11,7 +8,7 @@ public class LessonHandler {
   
   LinkedList<Lesson> lessonList;
   
-  public Prompt prompt;
+  Prompt prompt;
   
   public LessonHandler(Prompt prompt) {
     this.prompt = prompt;
@@ -137,7 +134,8 @@ public class LessonHandler {
     return -1;
   }
   
- 
+
+  
 }
 
 

@@ -9,6 +9,7 @@ public class Board {
   private Date date;
   private int viewCount;
   private String writer;
+  
 
   @Override
   public int hashCode() {

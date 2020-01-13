@@ -1,0 +1,15 @@
+package com.eomcs.lms.util;
+
+public class Stack {
+  
+  private static final int DEFAULE_CAPACITY = 10;
+  
+  Object[] elementDate;
+  int size;
+  
+  public Stack(){
+    this.elementDate = new Object[DEFAULE_CAPACITY];
+    this.size = 0;
+  }
+  
+}

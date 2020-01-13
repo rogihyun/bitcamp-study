@@ -19,6 +19,7 @@ public class Exam0110 {
     // => JVM이 끝날 때까지 메모리에 유지된다.
     System.out.println(x1 == x2);
   }
+  
 }
 
 

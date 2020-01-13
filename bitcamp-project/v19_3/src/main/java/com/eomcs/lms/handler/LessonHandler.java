@@ -3,14 +3,14 @@
 package com.eomcs.lms.handler;
 
 import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.util.ArrayList;
-import com.eomcs.lms.util.Prompt;
+import com.eomcs.util.ArrayList;
+import com.eomcs.util.Prompt;
 
 public class LessonHandler {
   
   ArrayList<Lesson> lessonList;
   
-  public Prompt prompt;
+  Prompt prompt;
   
   public LessonHandler(Prompt prompt) {
     this.prompt = prompt;
@@ -136,7 +136,8 @@ public class LessonHandler {
     return -1;
   }
   
- 
+
+  
 }
 
 

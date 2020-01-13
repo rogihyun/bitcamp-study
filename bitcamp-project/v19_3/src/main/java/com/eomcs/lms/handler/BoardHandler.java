@@ -5,8 +5,8 @@ package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import com.eomcs.lms.domain.Board;
-import com.eomcs.lms.util.ArrayList;
-import com.eomcs.lms.util.Prompt;
+import com.eomcs.util.ArrayList;
+import com.eomcs.util.Prompt;
 
 public class BoardHandler {
   

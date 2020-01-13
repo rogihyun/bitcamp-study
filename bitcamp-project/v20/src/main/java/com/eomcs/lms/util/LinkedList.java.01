@@ -1,4 +1,4 @@
-package com.eomcs.util;
+package com.eomcs.lms.util;
 
 public class LinkedList {
 

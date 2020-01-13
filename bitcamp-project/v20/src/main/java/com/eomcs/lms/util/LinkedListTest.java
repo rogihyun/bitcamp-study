@@ -1,6 +1,7 @@
 package com.eomcs.lms.util;
 
 public class LinkedListTest {
+
   public static void main(String[] args) {
     LinkedList<String> list = new LinkedList<>();
     
@@ -12,15 +13,22 @@ public class LinkedListTest {
     list.add("fff");
     list.add("ggg");
     
-    System.out.println(list.set(0, "xxx"));;
+    System.out.println(list.set(0, "xxx"));
     System.out.println();
-    pirint(list);
+    
+    print(list);
     
   }
-  static void pirint(LinkedList<String> list) {
-    Object[] arr = list.toArray();
-    for(Object value : arr) {
+  
+  static void print(LinkedList<String> list) {
+    //String[] arr = list.toArray(new String[0]);
+    
+    String[] arr = new String[list.size()];
+    list.toArray(arr);
+    
+    for (String value : arr) {
       System.out.println(value);
     }
   }
+
 }

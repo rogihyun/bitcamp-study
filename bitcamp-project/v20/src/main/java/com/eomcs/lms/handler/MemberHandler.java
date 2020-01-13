@@ -2,7 +2,6 @@ package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import com.eomcs.lms.domain.Member;
-import com.eomcs.lms.util.ArrayList;
 import com.eomcs.lms.util.LinkedList;
 import com.eomcs.lms.util.Prompt;
 
