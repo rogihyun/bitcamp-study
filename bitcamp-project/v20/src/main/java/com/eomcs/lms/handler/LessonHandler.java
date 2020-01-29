@@ -1,8 +1,8 @@
 package com.eomcs.lms.handler;
 
 import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.util.LinkedList;
-import com.eomcs.lms.util.Prompt;
+import com.eomcs.util.LinkedList;
+import com.eomcs.util.Prompt;
 
 public class LessonHandler {
   
