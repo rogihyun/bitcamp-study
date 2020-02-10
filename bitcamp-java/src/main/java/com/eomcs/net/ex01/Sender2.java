@@ -8,9 +8,9 @@ import java.util.Scanner;
 public class Sender2 {
 
   public static void main(String[] args) throws Exception {
-    Scanner keyScan = new Scanner(System.in);
+    System.out.println("클라이언트 실행!");
 
-    System.out.println("클라이언트실행");
+    Scanner keyScan = new Scanner(System.in);
 
     Socket socket = new Socket("localhost", 8888);
 
@@ -33,8 +33,5 @@ public class Sender2 {
   }
 
 }
-
-
-
 
 
