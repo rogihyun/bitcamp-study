@@ -103,7 +103,17 @@ from lect l inner join room r on l.rno=r.rno;
    강의실이 아직 지정되지 않은 강의의 경우 강의실 테이블의 데이터와 연결하지 못해 
    결과로 출력되지 않는 문제가 있다. */
 
+/* inner join의 문제점 예:
+ * 모든 강의장 이름을 출력하라.
+ *  단 강의장에 강의가 배정된 경우 그 강의 이름도 출력하라
+ */
 
+select
+r.rno,
+r.name,
+r.loc,
+l.titl
+from room r inner join lect l on r.rno = l.rno; 
 
 /* => 만약 기준 컬럼의 값과 일치하는 데이터가 없어서 
       다른 테이블의 데이터와 연결되지 않았다 하더라도 

@@ -16,7 +16,10 @@ from lect_appl la
 /* select 절에 서브쿼리 사용하기 */
 
 /* => 1단계: 수강신청 데이터를 출력 */
-select la.lano, la.lno, la.mno, la.rdt
+select la.lano,
+la.lno, 
+la.mno,
+date_format(la.rdt, '%Y-%m-%d') reg_dt
 from lect_appl la; 
 
 /* => 2단계 : 서브 쿼리를 이용하여 강의명을 가져오기 */

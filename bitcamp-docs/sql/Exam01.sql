@@ -7,6 +7,7 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 - 트리거(trigger)
   - 특정 조건에서 자동으로 호출되는 함수
   - 특정 조건? SQL 실행 전/후 등
+  - oop 디자인 패턴에서 옵저버에 해당한다.
 - 함수(function)
 - 프로시저(procedure)
 - 인덱스(index)
@@ -461,13 +462,13 @@ create table test1(
 ``` 
 
 - 특정 컬럼의 값을 자동으로 증가하게 선언한다.
-- 단 반드시 primary key여야 한다.
+- 단 반드시  key(primary 나 unique)여야 한다.
 ```
 alter table test1
   modify column no int not null auto_increment; /* 아직 no가 pk가 아니기 때문에 오류*/
   
 alter table test1
-  add constraint primary key (no); /* 일단 no를 pk로 지정한다.*/
+  add constraint primary key (no); /* 일단 no를 unique로 지정해도 한다.*/
 
 alter table test1
   modify column no int not null auto_increment; /* 그런 후 auto_increment를 지정한다.*/
@@ -475,11 +476,30 @@ alter table test1
 
 - 입력 테스트
 ```
+/* auto-increment 컬럼의 값을 직접 지정할수있다*/
+insert into test1(no, name) values(1, 'xxx');
+
+/* auto-increment 컬럼의 값을 생략하면 마지막 값을 증가시켜서 입력한다*/
 insert into test1(name) values('aaa');
-insert into test1(name) values('bbb');
-insert into test1(name) values('ccc');
-insert into test1(name) values('ddd');
-insert into test1(name) values('eee');
+
+insert into test1(no, name) values(100, 'yyy');
+
+insert into test1(name) values('bbb'); /* 101이 입력된다*/
+
+insert into test1(name) values('ccc');/* no 102이 입력된다*/
+insert into test1(name) values('ddd');/* no 103이 입력된다*/
+
+/* 값을 삭제하더라도 aoto-incerement는 계속 앞으로 증가한다*/
+delete from test1 where no =103;
+
+insert into test1(name) values('eee'); /* no 104이 입력된다*/
+
+insert into test1(name) values('123456901234567901234')
+
+/* 다른 DBMS의 경우 입력 오류가 발생하더라도 번호는 자동 증가하기 떄문에
+ * 다음 값을 입력할 떄는 증가된 값이 들어간다.
+ * 그러나 MYㄴ삐(mariaDB)는 증가되지 않는다.*/
+insert into test1(name) values('fff');
 ```
 
 ## 뷰(view)
