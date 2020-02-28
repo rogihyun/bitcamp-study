@@ -1,79 +1,55 @@
-# 38_4 - 트랜잭션 적용 후: 사진 게시글 입력과 첨부 파일 입력을 한 단위로 다루기
+# 42 - SQL 삽입 공격과 자바 시큐어 코딩: 사용자 로그인 기능 추가
+
+DB 프로그래밍의 핵심은 JDBC API를 사용하여 SQL문을 실행하는 것이다. 
+SQL 문은 보통 사용자가 입력한 값을 가지고 작성하는데, 
+여기서 보안 문제가 발생한다. 
+SQL을 잘 아는 사용자가 입력 값에 SQL 문법을 포함시켜서 
+내부 데이터를 조회한다거나 변경할 수 있다.
+이를 방지하기 위해서는 사용자가 입력한 값을 가지고 SQL 문을 만들어서는 안된다.
 
 
 ## 학습목표
 
-- 여러 개의 DB 변경 작업을 한 작업 단위로 묶는 트랜잭션을 다룰 수 있다.
-- `commit`과 `rollback`을 활용할 수 있다.
-- 트랜잭션 사용하기 전의 문제점을 이해한다.
+- SQL 삽입 공격이 무엇인지 안다.
+- SQL 삽입 공격을 막기 위한 방법을 안다.
+- Statement와 PreparedStatement의 차이점을 이해한다.
 
 ## 실습 소스 및 결과
 
-- src/main/java/com/eomcs/util/Prompt.java 추가
-- src/main/java/com/eomcs/servlet/XxxServlet.java 변경
+- src/main/java/com/eomcs/sql/ConnectionFactory.java 삭제
+- src/main/java/com/eomcs/sql/DataSource.java 추가
+- src/main/java/com/eomcs/sql/PlatformTransactionManager.java 변경
+- src/main/java/com/eomcs/lms/dao/mariadb/XxxDaoImpl.java 변경
+- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경
+- src/main/java/com/eomcs/lms/ServerApp.java 변경
 
 ## 실습  
 
-### 훈련1: 트랜잭션을 사용하기 전의 문제점을 확인하라.
+### 훈련1: 사용자 로그인 기능을 만들라.
 
-사진 게시물을 입력할 때, 
-첨부 파일 일부는 DB 컬럼에서 허용된 길이 보다 더 긴 값을 갖게 한다.
-이 때 오류가 발생하는데, 그럼에도 불구하고 사진 게시글이 정상적으로 입력되고,
-오류가 발생하기 전에 입력한 첨부파일이 정상적으로 입력 되는 것을 확인한다.
-
-`ClientApp` 실행 예:
-```
-명령> /photoboard/add
-제목?
-ok2
-수업?
-1
-최소 한 개의 사진 파일을 등록해야 합니다.
-파일명 입력 없이 그냥 엔터를 치면 파일 추가를 마칩니다.
-사진 파일?
-ok1.gif
-사진 파일?
-ok2.gif
-사진 파일?
-0123456789001234567890012345678900123456789001234567890
-0123456789001234567890012345678900123456789001234567890
-0123456789001234567890012345678900123456789001234567890
-0123456789001234567890012345678900123456789001234567890
-0123456789001234567890012345678900123456789001234567890
-0123456789001234567890012345678900123456789001234567890
-사진 파일?
-
-java.sql.SQLDataException: (conn=12) Data too long for column 'PATH' at row 1 : (conn=12) Data too long for column 'PATH' at row 1
-
-명령> /photoboard/detail
-번호?
-1
-제목: ok2
-작성일: 2018-11-14
-조회수: 0
-수업: 2
-사진 파일:
-> ok1.gif
-> ok2.gif
-```
-
-### 훈련2: 사진 게시글 입력과 첨부파일 입력을 한 단위로 다뤄라. 
-
-사진 게시글과 첨부파일을 입력하는 코드를 트랜잭션으로 묶어 한 단위로 다룬다.
-
-- com.eomcs.lms.servlet.PhotoBoardAddServlet 변경
-  - 게시글 입력과 첨부파일 입력 부분을 실행하기 전에 수동 commit으로 설정한다.
-  - 성공하면 commit(), 실패하면 rollback() 한다.
+- com.eomcs.lms.dao.MemberDao 변경
+  - 이메일과 암호를 가지고 사용자를 조회하는 메서드를 추가한다.
+  - Member findByEmailAndPassword(String email, String password)
+- com.eomcs.lms.dao.mariadb.MemberDaoImpl 변경
+  - MemberDao에 추가한 메서드를 구현한다.
+- com.eomcs.lms.servlet.LoginServlet 추가
+  - 사용자로부터 이메일과 암호를 입력받아 인증을 수행한다.
+- com.eomcs.lms.ServerApp 변경
+  - "/auth/login" 명령을 처리할 LoginServlet 객체를 맵에 추가한다.
   
-### 훈련3: 사진 게시글 변경과 첨부파일 삭제, 입력을 한 단위로 다뤄라. 
+'ClientApp' 실행 예:
+```
+명령> /auth/login
+이메일?
+user1@test.com
+암호?
+1111
+'홍길동'님 환영합니다.
 
-- com.eomcs.lms.servlet.PhotoBoardUpdateServlet 변경
-  - 게시글 변경과 첨부파일 삭제,입력 부분을 실행하기 전에 수동 commit으로 설정한다.
-  - 성공하면 commit(), 실패하면 rollback() 한다.
-
-### 훈련4: 사진 게시글 삭제와 첨부파일 삭제를 한 단위로 다뤄라. 
-
-- com.eomcs.lms.servlet.PhotoBoardDeleteServlet 변경
-  - 게시글 삭제와 첨부파일 삭제를 실행하기 전에 수동 commit으로 설정한다.
-  - 성공하면 commit(), 실패하면 rollback() 한다.
-  
+명령> /auth/login
+이메일?
+user1@test.com
+암호?
+2222
+사용자가 정보가 유효하지 않습니다.
+```
