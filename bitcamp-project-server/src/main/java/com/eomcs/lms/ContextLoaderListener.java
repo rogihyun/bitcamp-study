@@ -19,7 +19,6 @@ public class ContextLoaderListener implements ApplicationContextListener {
 
   static Logger logger = LogManager.getLogger(ContextLoaderListener.class);
 
-
   @Override
   public void contextInitialized(Map<String, Object> context) {
 

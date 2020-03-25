@@ -35,9 +35,9 @@ public class MybatisConfig {
   @Bean
   public SqlSessionFactory sqlSessionFactory(DataSource dataSource, // DB 커넥션풀
       ApplicationContext appCtx // Spring IoC 컨테이너
-      ) throws Exception {
+  ) throws Exception {
 
-    // mybatis의 log4j활성화시키기
+    // Mybatis의 log4j2 활성화시키기
     LogFactory.useLog4J2Logging();
 
     // Spring IoC 컨테이너 용으로 mybatis 측에서 따로 제작한
