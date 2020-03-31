@@ -1,25 +1,22 @@
 package com.eomcs.lms.servlet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
-import org.springframework.stereotype.Component;
-import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.service.LessonService;
-import com.eomcs.util.RequestMapping;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 
-@Component
-public class PhotoBoardAddFormServlet {
+@WebServlet("/photoboard/addForm")
+public class PhotoBoardAddFormServlet extends GenericServlet {
+  private static final long serialVersionUID = 1L;
 
-  LessonService lessonService;
-
-  public PhotoBoardAddFormServlet(LessonService lessonService) {
-    this.lessonService = lessonService;
-  }
-
-  @RequestMapping("/photoboard/addForm")
-  public void service(Map<String, String> params, PrintWriter out) throws Exception {
-    int lessonNo = Integer.parseInt(params.get("lessonNo"));
-    Lesson lesson = lessonService.get(lessonNo);
+  @Override
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
+    res.setContentType("text/html;charset=UTF-8");
+    PrintWriter out = res.getWriter();
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
@@ -29,7 +26,7 @@ public class PhotoBoardAddFormServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>사진 입력</h1>");
-    out.println("<form action='/photoboard/add'>");
+    out.println("<form action='add'>");
     out.printf("강의번호: <input name='lessonNo' type='text' value='%d' readonly><br>\n", //
         lesson.getNo());
     out.printf("강의명: %s<br>\n", lesson.getTitle());

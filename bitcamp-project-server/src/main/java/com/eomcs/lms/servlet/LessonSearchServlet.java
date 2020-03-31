@@ -1,47 +1,57 @@
 package com.eomcs.lms.servlet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import org.springframework.stereotype.Component;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
-import com.eomcs.util.RequestMapping;
 
-@Component
-public class LessonSearchServlet {
+@WebServlet("/lesson/list")
+public class LessonSearchServlet extends GenericServlet {
+  private static final long serialVersionUID = 1L;
 
-  LessonService lessonService;
+  @Override
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
+    try {
+      res.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = res.getWriter();
 
-  public LessonSearchServlet(LessonService lessonService) {
-    this.lessonService = lessonService;
-  }
+      ServletContext servletContext = req.getServletContext();
+      ApplicationContext iocContainer =
+          (ApplicationContext) servletContext.getAttribute("iocContainer");
+      LessonService lessonService = iocContainer.getBean(LessonService.class);
 
-  @RequestMapping("/lesson/search")
-  public void service(Map<String, String> params, PrintWriter out) throws Exception {
     HashMap<String, Object> map = new HashMap<>();
-    String value = params.get("title");
+    String value = req.getParameter("title");
     if (value.length() > 0) {
       map.put("title", value);
     }
 
-    value = params.get("startDate");
+    value = req.getParameter("startDate");
     if (value.length() > 0) {
       map.put("startDate", value);
     }
 
-    value = params.get("endDate");
+    value = req.getParameter("endDate");
     if (value.length() > 0) {
       map.put("endDate", value);
     }
 
-    value = params.get("totalHours");
+    value = req.getParameter("totalHours");
     if (value.length() > 0) {
       map.put("totalHours", Integer.parseInt(value));
     }
 
-    value = params.get("dayHours");
+    value = req.getParameter("dayHours");
     if (value.length() > 0) {
       map.put("dayHours", Integer.parseInt(value));
     }
@@ -81,6 +91,9 @@ public class LessonSearchServlet {
     out.println("</table>");
     out.println("</body>");
     out.println("</html>");
+    } catch (Exception e) {
+      throw new ServletException(e);
+    }
   }
 }
 

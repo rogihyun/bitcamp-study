@@ -1,32 +1,37 @@
 package com.eomcs.lms.servlet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Map;
-import org.springframework.stereotype.Component;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
-import com.eomcs.lms.service.LessonService;
 import com.eomcs.lms.service.PhotoBoardService;
-import com.eomcs.util.RequestMapping;
 
-@Component
-public class PhotoBoardAddServlet {
+@WebServlet("/photoboard/add")
+public class PhotoBoardAddServlet extends GenericServlet {
+  private static final long serialVersionUID = 1L;
 
-  PhotoBoardService photoBoardService;
-  LessonService lessonService;
+  @Override
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
+    try {
+      res.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = res.getWriter();
 
-  public PhotoBoardAddServlet(//
-      PhotoBoardService photoBoardService, //
-      LessonService lessonService) {
-    this.photoBoardService = photoBoardService;
-    this.lessonService = lessonService;
-  }
+      ServletContext servletContext = req.getServletContext();
+      ApplicationContext iocContainer =
+          (ApplicationContext) servletContext.getAttribute("iocContainer");
+      PhotoBoardService photoboardService = iocContainer.getBean(PhotoBoardService.class);
 
-  @RequestMapping("/photoboard/add")
-  public void service(Map<String, String> params, PrintWriter out) throws Exception {
-    int lessonNo = Integer.parseInt(params.get("lessonNo"));
+    int lessonNo = Integer.parseInt(req.getParameter("lessonNo"));
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -45,12 +50,12 @@ public class PhotoBoardAddServlet {
       }
 
       PhotoBoard photoBoard = new PhotoBoard();
-      photoBoard.setTitle(params.get("title"));
+      photoBoard.setTitle(req.getParameter("title"));
       photoBoard.setLesson(lesson);
 
       ArrayList<PhotoFile> photoFiles = new ArrayList<>();
       for (int i = 1; i <= 5; i++) {
-        String filepath = params.get("photo" + i);
+        String filepath = req.getParameter("photo" + i);
         if (filepath.length() > 0) {
           photoFiles.add(new PhotoFile().setFilepath(filepath));
         }
@@ -70,5 +75,8 @@ public class PhotoBoardAddServlet {
     }
     out.println("</body>");
     out.println("</html>");
+    } catch (Exception e) {
+      throw new ServletException(e);
+    }
   }
 }

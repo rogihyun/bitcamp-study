@@ -1,24 +1,34 @@
 package com.eomcs.lms.servlet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
-import org.springframework.stereotype.Component;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
-import com.eomcs.util.RequestMapping;
 
-@Component
-public class MemberListServlet {
+@WebServlet("/member/add")
+public class MemberListServlet extends GenericServlet {
+  private static final long serialVersionUID = 1L;
 
-  MemberService memberService;
+  @Override
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
+    try {
+      res.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = res.getWriter();
 
-  public MemberListServlet(MemberService memberService) {
-    this.memberService = memberService;
-  }
+      ServletContext servletContext = req.getServletContext();
+      ApplicationContext iocContainer =
+          (ApplicationContext) servletContext.getAttribute("iocContainer");
+      MemberService memberService = iocContainer.getBean(MemberService.class);
 
-  @RequestMapping("/member/list")
-  public void service(Map<String, String> params, PrintWriter out) throws Exception {
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
@@ -27,7 +37,7 @@ public class MemberListServlet {
     out.println("</head>");
     out.println("<body>");
     out.println("  <h1>회원</h1>");
-    out.println("  <a href='/member/addForm'>새 회원</a><br>");
+    out.println("  <a href='addForm'>새 회원</a><br>");
     out.println("  <table border='1'>");
     out.println("  <tr>");
     out.println("    <th>번호</th>");
@@ -41,7 +51,7 @@ public class MemberListServlet {
     for (Member m : members) {
       out.printf("  <tr>"//
           + "<td>%d</td> "//
-          + "<td><a href='/member/detail?no=%d'>%s</a></td> "//
+          + "<td><a href='detail?no=%d'>%s</a></td> "//
           + "<td>%s</td> "//
           + "<td>%s</td>"//
           + "<td>%s</td>"//
@@ -63,5 +73,8 @@ public class MemberListServlet {
     out.println("<button>검색</button>");
     out.println("</body>");
     out.println("</html>");
+    } catch (Exception e) {
+      throw new ServletException(e);
+    }
   }
 }
