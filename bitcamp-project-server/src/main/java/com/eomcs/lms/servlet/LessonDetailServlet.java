@@ -30,6 +30,7 @@ public class LessonDetailServlet extends HttpServlet {
 
       int no = Integer.parseInt(request.getParameter("no"));
       Lesson lesson = lessonService.get(no);
+      request.getRequestDispatcher("/Header").include(request, response);
 
       out.println("<!DOCTYPE html>");
       out.println("<html>");
@@ -68,10 +69,14 @@ public class LessonDetailServlet extends HttpServlet {
       } else {
         out.println("<p>해당 번호의 강의가 없습니다.</p>");
       }
-      out.println("</body>");
-      out.println("</html>");
+
+      request.getRequestDispatcher("/Footer").include(request, response);
+
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

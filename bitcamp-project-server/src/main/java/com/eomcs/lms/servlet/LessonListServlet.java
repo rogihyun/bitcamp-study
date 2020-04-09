@@ -29,6 +29,8 @@ public class LessonListServlet extends HttpServlet {
           (ApplicationContext) servletContext.getAttribute("iocContainer");
       LessonService lessonService = iocContainer.getBean(LessonService.class);
 
+      request.getRequestDispatcher("/Header").include(request, response);
+
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
@@ -74,10 +76,12 @@ public class LessonListServlet extends HttpServlet {
       out.println("일 강의시간: <input name='dayHours' type='number'><br>");
       out.println("<button>검색</button>");
 
-      out.println("</body>");
-      out.println("</html>");
+      request.getRequestDispatcher("/Footer").include(request, response);
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }
