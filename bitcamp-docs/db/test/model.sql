@@ -1,5 +1,5 @@
 -- 수강신청
-DROP TABLE IF EXISTS t_lesson_applicaton RESTRICT;
+DROP TABLE IF EXISTS t_lesson_application RESTRICT;
 
 -- 학생
 DROP TABLE IF EXISTS t_students RESTRICT;
@@ -29,31 +29,31 @@ DROP TABLE IF EXISTS t_lesson_teachers RESTRICT;
 DROP TABLE IF EXISTS t_members RESTRICT;
 
 -- 수강신청
-CREATE TABLE t_lesson_applicaton (
-  lesson_application INTEGER  NOT NULL COMMENT '수강신청번호', -- 수강신청번호
-  student_no         INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
-  lesson_no          INTEGER  NOT NULL COMMENT '강의번호', -- 강의번호
-  create_date        DATETIME NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
-  status             INTEGER  NULL     COMMENT '상태' -- 상태
+CREATE TABLE t_lesson_application (
+  application_no INTEGER  NOT NULL COMMENT '수강신청번호', -- 수강신청번호
+  student_no     INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
+  lesson_no      INTEGER  NOT NULL COMMENT '강의번호', -- 강의번호
+  create_date    DATETIME NOT NULL DEFAULT now() COMMENT '신청일', -- 신청일
+  status         INTEGER  NULL     COMMENT '상태' -- 상태
 )
 COMMENT '수강신청';
 
 -- 수강신청
-ALTER TABLE t_lesson_applicaton
-  ADD CONSTRAINT PK_t_lesson_applicaton -- 수강신청 기본키
+ALTER TABLE t_lesson_application
+  ADD CONSTRAINT PK_t_lesson_application -- 수강신청 기본키
     PRIMARY KEY (
-      lesson_application -- 수강신청번호
+      application_no -- 수강신청번호
     );
 
 -- 수강신청 유니크 인덱스
-CREATE UNIQUE INDEX UIX_t_lesson_applicaton
-  ON t_lesson_applicaton ( -- 수강신청
+CREATE UNIQUE INDEX UIX_t_lesson_application
+  ON t_lesson_application ( -- 수강신청
     student_no ASC, -- 회원번호
     lesson_no ASC   -- 강의번호
   );
 
-ALTER TABLE t_lesson_applicaton
-  MODIFY COLUMN lesson_application INTEGER NOT NULL AUTO_INCREMENT COMMENT '수강신청번호';
+ALTER TABLE t_lesson_application
+  MODIFY COLUMN application_no INTEGER NOT NULL AUTO_INCREMENT COMMENT '수강신청번호';
 
 -- 학생
 CREATE TABLE t_students (
@@ -65,7 +65,7 @@ CREATE TABLE t_students (
   final_education VARCHAR(40)  NOT NULL COMMENT '최종학력', -- 최종학력
   major           VARCHAR(40)  NOT NULL COMMENT '전공', -- 전공
   school_name     VARCHAR(40)  NOT NULL COMMENT '최종학교명', -- 최종학교명
-  working         INTEGER      NULL     COMMENT '재직여부', -- 재직여부
+  working         INTEGER      NOT NULL COMMENT '재직여부', -- 재직여부
   account         VARCHAR(20)  NULL     COMMENT '통장번호', -- 통장번호
   bank            VARCHAR(40)  NULL     COMMENT '은행명' -- 은행명
 )
@@ -81,19 +81,19 @@ ALTER TABLE t_students
 -- 학생 유니크 인덱스
 CREATE UNIQUE INDEX UIX_t_students
   ON t_students ( -- 학생
-    account ASC, -- 통장번호
-    bank ASC     -- 은행명
+    bank ASC,    -- 은행명
+    account ASC  -- 통장번호
   );
 
 -- 강의
 CREATE TABLE t_lessons (
   lesson_no      INTEGER      NOT NULL COMMENT '강의번호', -- 강의번호
   title          VARCHAR(255) NOT NULL COMMENT '강의명', -- 강의명
-  statrt_date    DATE         NOT NULL COMMENT '시작일', -- 시작일
+  start_date     DATE         NOT NULL COMMENT '시작일', -- 시작일
   end_date       DATE         NOT NULL COMMENT '종료일', -- 종료일
   total_hours    INTEGER      NOT NULL COMMENT '총강의시간', -- 총강의시간
   day_hours      INTEGER      NOT NULL COMMENT '일강의시간', -- 일강의시간
-  quantioty      INTEGER      NOT NULL COMMENT '모집인원', -- 모집인원
+  quantity       INTEGER      NOT NULL COMMENT '모집인원', -- 모집인원
   content        TEXT         NOT NULL COMMENT '수업내용', -- 수업내용
   lesson_room_no INTEGER      NULL     COMMENT '강의실번호' -- 강의실번호
 )
@@ -117,7 +117,7 @@ ALTER TABLE t_lessons
 
 -- 강사
 CREATE TABLE t_teachers (
-  teacjer_no INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+  teacher_no INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
   photo      VARCHAR(255) NULL     COMMENT '사진' -- 사진
 )
 COMMENT '강사';
@@ -126,15 +126,15 @@ COMMENT '강사';
 ALTER TABLE t_teachers
   ADD CONSTRAINT PK_t_teachers -- 강사 기본키
     PRIMARY KEY (
-      teacjer_no -- 회원번호
+      teacher_no -- 회원번호
     );
 
 -- 매니저
 CREATE TABLE t_managers (
-  managers_no INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
-  photo       VARCHAR(255) NULL     COMMENT '사진', -- 사진
-  position    VARCHAR(40)  NOT NULL COMMENT '직위', -- 직위
-  fax         VARCHAR(20)  NULL     COMMENT '팩스' -- 팩스
+  manager_no INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+  photo      VARCHAR(255) NULL     COMMENT '사진', -- 사진
+  position   VARCHAR(40)  NOT NULL COMMENT '직위', -- 직위
+  fax        VARCHAR(20)  NULL     COMMENT '팩스' -- 팩스
 )
 COMMENT '매니저';
 
@@ -142,7 +142,7 @@ COMMENT '매니저';
 ALTER TABLE t_managers
   ADD CONSTRAINT PK_t_managers -- 매니저 기본키
     PRIMARY KEY (
-      managers_no -- 회원번호
+      manager_no -- 회원번호
     );
 
 -- 강의실
@@ -190,8 +190,8 @@ ALTER TABLE t_lesson_room_photos
 
 -- 강의매니저
 CREATE TABLE t_lesson_managers (
-  lesson_no   INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
-  managers_no INTEGER NOT NULL COMMENT '회원번호' -- 회원번호
+  lesson_no  INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
+  manager_no INTEGER NOT NULL COMMENT '회원번호' -- 회원번호
 )
 COMMENT '강의매니저';
 
@@ -199,14 +199,14 @@ COMMENT '강의매니저';
 ALTER TABLE t_lesson_managers
   ADD CONSTRAINT PK_t_lesson_managers -- 강의매니저 기본키
     PRIMARY KEY (
-      lesson_no,   -- 강의번호
-      managers_no  -- 회원번호
+      lesson_no,  -- 강의번호
+      manager_no  -- 회원번호
     );
 
 -- 강의강사
 CREATE TABLE t_lesson_teachers (
   lesson_no  INTEGER NOT NULL COMMENT '강의번호', -- 강의번호
-  teacjer_no INTEGER NOT NULL COMMENT '회원번호' -- 회원번호
+  teacher_no INTEGER NOT NULL COMMENT '회원번호' -- 회원번호
 )
 COMMENT '강의강사';
 
@@ -215,7 +215,7 @@ ALTER TABLE t_lesson_teachers
   ADD CONSTRAINT PK_t_lesson_teachers -- 강의강사 기본키
     PRIMARY KEY (
       lesson_no,  -- 강의번호
-      teacjer_no  -- 회원번호
+      teacher_no  -- 회원번호
     );
 
 -- 회원
@@ -251,8 +251,8 @@ ALTER TABLE t_members
   MODIFY COLUMN member_no INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';
 
 -- 수강신청
-ALTER TABLE t_lesson_applicaton
-  ADD CONSTRAINT FK_t_students_TO_t_lesson_applicaton -- 학생 -> 수강신청
+ALTER TABLE t_lesson_application
+  ADD CONSTRAINT FK_t_students_TO_t_lesson_application -- 학생 -> 수강신청
     FOREIGN KEY (
       student_no -- 회원번호
     )
@@ -261,8 +261,8 @@ ALTER TABLE t_lesson_applicaton
     );
 
 -- 수강신청
-ALTER TABLE t_lesson_applicaton
-  ADD CONSTRAINT FK_t_lessons_TO_t_lesson_applicaton -- 강의 -> 수강신청
+ALTER TABLE t_lesson_application
+  ADD CONSTRAINT FK_t_lessons_TO_t_lesson_application -- 강의 -> 수강신청
     FOREIGN KEY (
       lesson_no -- 강의번호
     )
@@ -294,7 +294,7 @@ ALTER TABLE t_lessons
 ALTER TABLE t_teachers
   ADD CONSTRAINT FK_t_members_TO_t_teachers -- 회원 -> 강사
     FOREIGN KEY (
-      teacjer_no -- 회원번호
+      teacher_no -- 회원번호
     )
     REFERENCES t_members ( -- 회원
       member_no -- 회원번호
@@ -304,7 +304,7 @@ ALTER TABLE t_teachers
 ALTER TABLE t_managers
   ADD CONSTRAINT FK_t_members_TO_t_managers -- 회원 -> 매니저
     FOREIGN KEY (
-      managers_no -- 회원번호
+      manager_no -- 회원번호
     )
     REFERENCES t_members ( -- 회원
       member_no -- 회원번호
@@ -324,10 +324,10 @@ ALTER TABLE t_lesson_room_photos
 ALTER TABLE t_lesson_managers
   ADD CONSTRAINT FK_t_managers_TO_t_lesson_managers -- 매니저 -> 강의매니저
     FOREIGN KEY (
-      managers_no -- 회원번호
+      manager_no -- 회원번호
     )
     REFERENCES t_managers ( -- 매니저
-      managers_no -- 회원번호
+      manager_no -- 회원번호
     );
 
 -- 강의매니저
@@ -344,10 +344,10 @@ ALTER TABLE t_lesson_managers
 ALTER TABLE t_lesson_teachers
   ADD CONSTRAINT FK_t_teachers_TO_t_lesson_teachers -- 강사 -> 강의강사
     FOREIGN KEY (
-      teacjer_no -- 회원번호
+      teacher_no -- 회원번호
     )
     REFERENCES t_teachers ( -- 강사
-      teacjer_no -- 회원번호
+      teacher_no -- 회원번호
     );
 
 -- 강의강사
