@@ -36,6 +36,7 @@ public class Controller01_1 {
 
     // 기본 ViewRosolver를 사용할 때는
     // 뷰 이름을 리턴하지 않으면 오류 발생!
+    //
     // internares로 교한한 다음은
     // => 리턴값이  없으면 URL()을 리턴값으로 사용한다
     // 따라서 viewResolver가 계산한 최종URL은
