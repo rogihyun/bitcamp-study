@@ -19,7 +19,7 @@ public class test2 {
     int base = keyScan.nextInt();
     keyScan.close();
     
-    // 직삼각형을 출력한다.
+    // 직삼각형을 출력한다..
     printTriangle(base);
   }
   
